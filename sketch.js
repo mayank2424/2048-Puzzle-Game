@@ -1,7 +1,8 @@
 
 ///Power file for 2048 game//
 
-var grid;
+let grid;
+let score=0;
 
 function blankGrid(){
    return [[0,0,0,0],
@@ -11,10 +12,39 @@ function blankGrid(){
 }
 
 
+//Basically this funtion will check for elements to the right and elements at down if elements at right and downside are equal then game is not over
+function isGameOver(){
+    for(let i=0;i<4;i++){
+        for(let j=0;j<4;j++){
+            if(grid[i][j]==0){
+                return false;
+            }
+            if(j!==3 && grid[i][j]===grid[i][j+1]){
+                return false;
+            }
+            if(i!==3 && grid[i][j]===grid[i+1][j]){
+                return false;
+            }
+            
+        }
+    }
+    return true;
+}
+
+function isGameWon(){
+    for(let i=0;i<4;i++){
+        for(let j=0;j<4;j++){
+            if(grid[i][j]==2048){
+                return true;
+            }
+        }
+    }
+    return false;
+}
 function setup(){
-	createCanvas(400,400);
+	createCanvas(500,500);
+//    noLoop();
    grid=blankGrid();
-    
     console.table(grid);
     addNumber();
     addNumber();
@@ -35,10 +65,11 @@ function addNumber(){
            }
 		}
 	} 
-  if(choice.length>0);
+  if(choice.length>0){
   let spot=random(choice);
   let r=random(1);
   grid[spot.x][spot.y]=r>0.5 ? 2 : 4;
+  }
 }
 
 
@@ -82,8 +113,10 @@ function rotateGrid(){
     }
     return newGrid;
 }
+
+
 function keyPressed(){
-    console.log(keyCode);
+//    console.log(keyCode);
     let flipped=false;
     let rotated=false;  //Assuming at initial game is played
     let gamePlayed=true; //Assu
@@ -135,12 +168,24 @@ function keyPressed(){
         if(changed){    //It also meansif(changed==true)
             addNumber();
         }
+//         updateCanvas();
+        let gameover=isGameOver();
+         if(gameover){
+            console.log("Game Over Bad moves");
+//             alert("Game Over");
+          }
+         let gamewon=isGameWon();
+         if(gamewon){
+             console.log("You Won and You will get what you u want from heart")
+         }
      }
     
 }
 function draw(){
-    background(255);
+    background('#bbada0');
+    noStroke();
     Drawgrid();
+    select("#score_card").html(score);
 }
 
 
@@ -160,6 +205,7 @@ function combineNumber(row){
         let b=row[i-1];
         if(a==b){
             row[i]=a+b;
+            score+=row[i];
             row[i-1]=0;
 //            break;
         }
@@ -169,21 +215,31 @@ function combineNumber(row){
 
 
 function Drawgrid(){
-        let w=100;
+        let w=120;
     for(i=0;i<4;i++){
         for(j=0;j<4;j++){
-            noFill();
-            stroke(0);
-            strokeWeight(2);
-            rect(i*w,j*w,w,w);
-            
             let value=grid[i][j];
+            let str=value.toString();
+//            stroke(0);
+            if(value!=0){
+            fill(colorSizes[str].color);
+            }else{
+                fill('#cdc1b4');
+            }
+            rect(i*w+15,j*w+15,w-10,w-10,10);
+            
+            
             if(grid[i][j]!==0){
                 textAlign(CENTER,CENTER);
-                textSize(64);
-                fill(0);
+//                fill(0);
+                   ///Here we have converted int into string for checking its length
+//                let s_len=str.length-1;
+//                let font_size=[64,64,40,16];   //here we have made array basis on str length if its 1 and 2 then size should be 64 and rest on size basis
+//                let str="" + value;
+                fill(colorSizes[str].tcolor);
                 noStroke();
-                text(value,i*w+w/2,j * w +w/2);
+                textSize(colorSizes[str].size);
+                text(value,i*w+w/2+10,j * w +w/2+10);
             }
         }
     }

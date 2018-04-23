@@ -12,9 +12,79 @@
 	<!-- <script src="grid.js"></script> -->
 	<!-- <script src="game.js"></script> -->
 	<script src="sketch.js"></script>
+    <script src="look.js"></script>
 <!--    <script src="Learncon.js"></script>-->
+    
+    
+    <style>
+        body{
+            background:#eee4da;
+        }
+        canvas{
+            margin-left:30%;
+            border-radius:6px;
+        }
+        .g_heading h1{
+            font-size:70px;
+            text-align:center;
+            margin:0;
+/*            float:left;*/
+        }
+        .head_2{
+            margin-bottom:100px;
+        }
+        .line{
+            float:left;
+            margin-left:30%;
+        }
+        .line p{
+            font-size:20px;
+            margin-top:30px;
+            letter-spacing:1;
+        }
+        
+        .score{
+            float:right;
+            margin-right:35%;
+            margin-top:12px;
+            background:#f2b179;
+            color:white;
+            padding:10px;
+            border-radius:3px;
+        }
+        .score p{
+            font-size:20px;
+            margin-top:5px;
+            margin-left:10px;
+        }
+        .score span{
+            font-size:25px;
+        }
+        .score p{
+/*            float:right;*/
+            margin:0 0 0 20px;
+        }
+        
+        
+    </style>
 </head>
+    
 	<body>
-<!--		<script src=sketch.js></script>-->
-	</body>
+        <div class="g_heading">
+            <h1>2048</h1>
+        </div>
+        <div class="head_2">
+            <div class="line">
+                <p>Join the tiles to get <b>2048 tile ..</b></p>
+            </div>
+
+            <div class="score">
+                   <span class="score_h">Score: </span><p id="score_card"></p>
+            </div>
+        </div>
+        
+</body>
+    
+    
 </html>
+
