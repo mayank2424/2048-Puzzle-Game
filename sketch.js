@@ -1,7 +1,11 @@
+//-------------------->>>>>>>>>>>>>>>>>>>>>>>2048 Game Developed By Mayank Gupta(@devmayank) Using Javascript(p5.js) and some sort of css and HTML..
+
+
 
 ///Power file for 2048 game//
 
 let grid;
+let grid_new;
 let score=0;
 
 function blankGrid(){
@@ -10,6 +14,7 @@ function blankGrid(){
           [0,0,0,0],
           [0,0,0,0]];
 }
+
 
 
 //Basically this funtion will check for elements to the right and elements at down if elements at right and downside are equal then game is not over
@@ -45,10 +50,12 @@ function setup(){
 	createCanvas(500,500);
 //    noLoop();
    grid=blankGrid();
-    console.table(grid);
+//    grid_new=blankGrid();
+    again_grid=blankGrid();
+//    console.table(grid);
     addNumber();
     addNumber();
-    console.table(grid);
+//    console.table(grid);
 
 } 
 
@@ -68,10 +75,23 @@ function addNumber(){
   if(choice.length>0){
   let spot=random(choice);
   let r=random(1);
-  grid[spot.x][spot.y]=r>0.5 ? 2 : 4;
+  grid[spot.x][spot.y]=r>0.1  ? 2 : 4;
+  again_grid[spot.x][spot.y]=r>0.1  ? 2 : 4;     
   }
 }
 
+function resetgame(){
+    
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++){
+//     grid[i][j]=again_grid[i][j];
+            return again_grid[i][j];
+        }
+    }
+//     console.log(again_grid);
+//    return ;
+//   
+}
 
 function compare(a,b){
     for(let i=0;i<4;i++){
@@ -103,12 +123,12 @@ function flip(){
     return grid;
 }
 
-function rotateGrid(){
+function transposeGrid(grid,direction){
      
     let newGrid=blankGrid();
     for(let i=0;i<4;i++){
         for(j=0;j<4;j++){
-            newGrid[i][j]=grid[j][i];
+           newGrid[i][j]=grid[j][i];
         }
     }
     return newGrid;
@@ -119,28 +139,57 @@ function keyPressed(){
 //    console.log(keyCode);
     let flipped=false;
     let rotated=false;  //Assuming at initial game is played
-    let gamePlayed=true; //Assu
-    if(keyCode===DOWN_ARROW){
-        
-    }
-    else if(keyCode===UP_ARROW){
-        flip(grid);
-        flipped=true;
-     }
+    let gamePlayed=true; //Ass
     
-    else if(keyCode==RIGHT_ARROW){
-        grid =rotateGrid(grid);
-        rotated=true;
-    }
-    else if(keyCode==LEFT_ARROW){
-        grid=rotateGrid(grid);
-        grid=flip(grid);
+    switch (keyCode){
+            
+        case DOWN_ARROW: 
+            //
+          break;
+            
+        case UP_ARROW:
+            grid=flip(grid);
+        flipped=true;
+            break;
+            
+        case RIGHT_ARROW:
+            grid =transposeGrid(grid);
+         rotated=true;
+          break;
+        
+        case LEFT_ARROW:
+//            dir=-1;
+           
+        grid=transposeGrid(grid);
+        grid=flip(grid); 
         rotated=true;
         flipped=true;
-    } 
-    else{
-        gamePlayed=false;
+        break; 
+        
+        default:
+            gamePlayed=false;
+           
     }
+//    if(keyCode===DOWN_ARROW){
+//        
+//    }
+//    else if(keyCode===UP_ARROW){
+//        flip(grid);
+//        flipped=true;
+//     }
+//    
+//    else if(keyCode==RIGHT_ARROW){
+//        grid =transposeGrid(grid,dir);
+//        rotated=true;
+//    }
+//    else if(keyCode==LEFT_ARROW){
+//        dir=-1;
+//        grid=transposeGrid(grid,dir);
+//        rotated=true;
+//    } 
+//    else{
+//        gamePlayed=false;
+//    }
       
      if(gamePlayed){
         let past=copyGrid(grid);    //Here we have made copyGrid function to make new array equala to grid(main) array;
@@ -152,27 +201,21 @@ function keyPressed(){
         let changed=compare(past, grid);   //Here we are comparig both array if arrays are not same means elemnts are changed and if changed then addNUmber
     
         if(flipped){
-            flip(grid);
+            grid=flip(grid);
         }
     
         if(rotated){
-//            console.log(grid);
-            grid=rotateGrid(grid);
-//            console.log(grid);
-            grid=rotateGrid(grid);
-//            console.log(grid);
-            grid=rotateGrid(grid);
-//             console.log(grid);
+            grid=transposeGrid(grid);
         }
-    
         if(changed){    //It also meansif(changed==true)
             addNumber();
         }
 //         updateCanvas();
         let gameover=isGameOver();
          if(gameover){
-            console.log("Game Over Bad moves");
-//             alert("Game Over");
+//            console.log("Game Over Bad moves");
+             
+             alert("Sorry Not this Time Click The Reset Button To Play Again..");
           }
          let gamewon=isGameWon();
          if(gamewon){
@@ -186,6 +229,9 @@ function draw(){
     noStroke();
     Drawgrid();
     select("#score_card").html(score);
+    select("button").mousePressed(function(){
+        location.reload(true);
+    });
 }
 
 
@@ -220,13 +266,22 @@ function Drawgrid(){
         for(j=0;j<4;j++){
             let value=grid[i][j];
             let str=value.toString();
-//            stroke(0);
+            
+//            if(grid_new[i][j]==1){
+//                stroke(200,0,200);
+////                strokeWeight(4);
+//                grid_new[i][j] = 0;
+//            }
+//            
+//            else{
+//               stroke(0); 
+//            }
             if(value!=0){
             fill(colorSizes[str].color);
             }else{
                 fill('#cdc1b4');
             }
-            rect(i*w+15,j*w+15,w-10,w-10,10);
+            rect(i*w+15,j*w+15,w-10,w-10,8);
             
             
             if(grid[i][j]!==0){
